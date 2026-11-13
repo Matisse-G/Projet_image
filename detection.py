@@ -10,11 +10,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.ndimage import convolve
 from skimage import io, color, measure
-
-img= io.imread('img/laitcode.jpg')
-
-
-
+import math
+import scipy
 
 def fonctionGauss(X, Y, sigma):
     G = np.exp(-(X**2 + Y**2)/(2*sigma**2))
@@ -30,9 +27,19 @@ def gauss(sigma):
     return G
 
 def decimation(img):
-    h, w = img.shape
-    for i in range(h):
-        for j in range(w):
-            if (i + j) % 2 == 1:
-                sup(i,j)
-return img
+    return img[::2, ::2]
+
+img= io.imread('images/laitcodejpg.jpg')
+if len(img.shape) == 3:
+    img = color.rgb2gray(img)
+    
+
+Gflitre = gauss(1)
+
+img_flitrer = scipy.signal.convolve2d(img, Gflitre, mode='same')
+img_div2 = decimation(img_flitrer)
+
+plt.figure()
+plt.imshow(img_div2)
+plt.figure()
+plt.imshow(img_div2)
