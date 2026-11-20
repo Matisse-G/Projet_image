@@ -15,7 +15,7 @@ import scipy
 from skimage.morphology import binary_dilation, disk
 from skimage.transform import resize
 
-def gauss1D(sigma):
+def canny(sigma):
     ray = 3 * sigma
     X = np.arange(-ray, ray + 1)
     G = np.exp(-(X**2)/(2*sigma**2))
@@ -34,6 +34,17 @@ def gauss(sigma):
     G = fonctionGauss(X, Y, sigma)
     G = G / G.sum()
     return G
+
+def flitrageCanny(img, sigma_G):
+  g, dg = noyaux_canny_1d(sigma_G)
+
+  Ix = convolve1d(img, dg, axis=1)
+  Ix = convolve1d(Ix, g, axis=0)
+
+  Iy = convolve1d(img, g, axis=1)
+  Iy = convolve1d(Iy, dg, axis=0)
+
+  return Ix, Iy
 
 def masque(
     masque_actuel, zone_detectee=None, forme_cible=None, rayon_dilatation=5 ):
@@ -57,6 +68,8 @@ def masque(
     ).astype(bool)
 
   return nouveau_masque
+    
+def detection(img_flitrer):
     
 
 def decimation(img):
