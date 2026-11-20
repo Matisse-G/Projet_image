@@ -15,10 +15,17 @@ import scipy
 from skimage.morphology import binary_dilation, disk
 from skimage.transform import resize
 
+def gauss1D(sigma):
+    ray = 3 * sigma
+    X = np.arange(-ray, ray + 1)
+    G = np.exp(-(X**2)/(2*sigma**2))
+    G = G / G.sum()
+    dg = -(X/(sigma**2)) * G
+    return G, dg
+
 def fonctionGauss(X, Y, sigma):
     G = np.exp(-(X**2 + Y**2)/(2*sigma**2))
     return G
-
 
 def gauss(sigma):
     ray = 3 * sigma
